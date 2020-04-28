@@ -1,4 +1,4 @@
-def BubbleSort(array):
+def BubbleSort(arr):
 	arr_len = 0
 	if arr == []:
 		return arr

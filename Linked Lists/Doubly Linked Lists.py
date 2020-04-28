@@ -84,6 +84,20 @@ class DoublyLinkedList():
 		print()
 		print('Length is: '+ str(self.length))
 
+	def reverse(head):
+	    leader = head    
+	    second = leader.next
+	    while second != None:
+	        third = second.next
+	        second.next = leader
+	        leader.prev = second
+	        leader = second
+	        second = third
+
+	    head.next = None
+	    head = leader
+	    return head
+
 
 double_li = DoublyLinkedList()
 double_li.append('Vignesh')
