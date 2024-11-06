@@ -1,0 +1,189 @@
+class Node{
+    constructor(value){
+        this.value = value;
+        this.next = null;
+        this.prev = null
+    }
+}
+
+class DoublyLinkedList{
+    constructor(value){
+        const new_node = new Node(value)
+        this.head = new_node
+        this.tail = new_node
+        this.length = 1
+    }
+    
+    push(value){
+        const new_node = new Node(value)
+        if(!this.head){
+            this.head = new_node
+            this.tail = this.head
+            this.length = 1
+        }
+        else{
+            this.tail.next = new_node
+            new_node.prev = this.tail
+            this.tail = new_node
+            this.length++
+        }
+        return this
+    }
+    
+    pop(){
+        if(!this.head){
+            return undefined
+        }
+        if(!this.head.next){
+            this.head = null
+            this.tail = null
+        }
+        else{
+            let temp = this.tail
+            this.tail = temp.prev
+            this.tail.next = null
+            temp.prev = null
+            this.length--
+            return temp
+        }
+    }
+    
+    unshift(value){
+        const new_node = new Node(value)
+        if(!this.head){
+            this.head = new_node
+            this.tail = new_node
+        }
+        else{
+            this.head.prev = new_node
+            new_node.next = this.head
+            this.head = new_node
+        }
+        this.length++
+        return this
+    }
+    
+    shift(){
+        if(!this.head){
+            return undefined
+        }
+        if(!this.head.next){
+            this.head = null
+            this.tail = null
+        }
+        else{
+            let temp = this.head.next
+            temp.prev = null
+            this.head.next = null
+            this.head = temp
+        }
+        this.length--
+        return this
+    }
+    
+    get(index){
+        let temp = this.head
+        if(index < this.length/2)
+        {
+            for(let i=0; i<index; i++)
+            {
+                temp = temp.next
+            }
+        }
+        else{
+            for(let i=this.length - 1; i>index; i++)
+            {
+                temp = temp.prev
+            }
+        }
+        return temp
+    }
+    
+    set(index, value){
+        if(index < 0 || index > this.length){
+            return false
+        }
+        let temp = this.get(index)
+        if(temp){
+            temp.value = value
+            return true
+        }
+        return false
+    }
+    
+    insert(index, value){
+        if(index === 0){
+            return this.unshift(value)
+        }
+        if(index === this.length){
+            return this.push(value)
+        }
+        if(index < 0 || index > this.length){
+            return false
+        }
+        const new_node = new Node(value)
+        let temp = this.get(index)
+        let prev = temp.prev
+        prev.next = new_node
+        temp.prev = new_node
+        new_node.prev = prev
+        new_node.next = temp
+        this.length++
+        return this
+    }
+    
+    remove(index){
+        if(index === 0){
+            return this.shift()
+        }
+        if(index === this.length){
+            return this.pop()
+        }
+        if(index < 0 || index > this.length){
+            return false
+        }
+        let temp = this.get(index)
+        let prev = temp.prev
+        
+        prev.next = temp.next
+        temp.next.prev = prev
+        temp.next = null
+        temp.prev = null
+        this.length--
+        return this
+    }
+    
+    reverse(){
+        if(!this.head){
+            return undefined
+        }
+        if(!this.head.next){
+            return this.head
+        }
+        let temp = this.head
+        this.head = this.tail
+        this.tail = temp
+        
+        let before = null
+        
+        while(temp){
+            before = temp.prev
+            temp.prev = temp.next
+            temp.next = before
+            temp = temp.prev
+        }
+    }
+}
+
+let ll = new DoublyLinkedList(7);
+ll.push(4)
+ll.push(9)
+ll.push(10)
+ll.pop()
+ll.unshift(1)
+ll.shift()
+console.log(ll.get(1))
+ll.set(1, 5)
+ll.insert(1, 6)
+ll.remove(1)
+console.log(ll)
